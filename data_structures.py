@@ -165,6 +165,7 @@ def binary_search_tree():
     # Ref
     - https://www.geeksforgeeks.org/binary-search-tree-set-1-search-and-insertion/
     """
+
     class Node(object):
         def __init__(self, key):
             self.left = None
@@ -204,6 +205,187 @@ def binary_search_tree():
     root = insert(root, 80)
 
 
+def binary_heap():
+    """ Binary Heap is a Binary Tree with the following properties
+    - A complete tree
+    - Either being a Min heap or a Max Heap
+
+    # Complexities
+    - Get Minimum in Min Heap: O(1) [Or Get Max in Max Heap]
+    - Extract Minimum Min Heap: O(Log n) [Or Extract Max in Max Heap]
+    - Decrease Key in Min Heap: O(Log n)  [Or Decrease Key in Max Heap]
+    - Insert: O(Log n)
+    - Delete: O(Log n)
+
+    # Min heap: The key at the root node must be minimum among the keys of all it’s children
+
+            5                      13
+         /      \               /       \
+       10        15           16         31
+      /                      /  \        /  \
+    30                     41    51    100   41
+    """
+
+    # Min heap
+    import sys
+
+    class MinHeap(object):
+        def __init__(self, maxsize):
+            self.maxsize = maxsize
+            self.size = 0
+            self.heap = [0] * (self.maxsize + 1)
+            self.heap[0] = -1 * sys.maxsize
+
+        def parent(self, pos):
+            """ Return the position of parent for the node currently at pos """
+            return pos // 2
+
+        def leftChild(self, pos):
+            """ Return the position of the left child for the node at pos """
+            return 2 * pos
+
+        def rightChild(self, pos):
+            """ Return the position of the right child for the node at pos """
+            return (2 * pos) + 1
+
+        def isLeaf(self, pos):
+            """ Return if the node at pos is a leaf node """
+            if (self.size // 2) <= pos <= self.size:
+                return True
+            return False
+
+        def swap(self, fpos, spos):
+            """ Swap the two nodes """
+            self.heap[fpos], self.heap[spos] = self.heap[spos], self.heap[fpos]
+
+        def minHeapify(self, pos):
+            """ Heapify the nodes of the heap """
+
+            # if the node is a non-leaf node and greater than any of its child
+            if not self.isLeaf(pos):
+                if self.heap[pos] > self.heap[self.leftChild(pos)] or self.heap[pos] > self.heap[self.rightChild(pos)]:
+                    if self.heap[self.leftChild(pos)] < self.heap[self.rightChild(pos)]:
+                        # Swap with the left child and heapify the left child
+                        self.swap(pos, self.leftChild(pos))
+                        self.minHeapify(self.leftChild(pos))
+                    else:
+                        # Swap with the right child and heapify the left child
+                        self.swap(pos, self.rightChild(pos))
+                        self.minHeapify(self.rightChild(pos))
+
+        def insert(self, element):
+            """ Insert a node into the heap"""
+            if self.size >= self.maxsize:
+                return
+            self.size += 1
+            self.heap[self.size] = element
+
+            current = self.size
+
+            while self.heap[current] < self.heap[self.parent(current)]:
+                self.swap(current, self.parent(current))
+                current = self.parent(current)
+
+        def Print(self):
+            """ Print the entire heap structure """
+            for i in range(1, (self.size // 2) + 1):
+                print(f" PARENT : {str(self.heap[i])}"
+                      f" LEFT  CHILD : {str(self.heap[2 * i])}"
+                      f" RIGHT CHILD : {str(self.heap[2 * i + 1])}")
+
+        def minHeap(self):
+            """ Build the min heap using the minHeapify API """
+            for pos in range(self.size // 2, 0, -1):
+                self.minHeapify(pos)
+
+    print('The minHeap is ')
+    minHeap = MinHeap(15)
+    minHeap.insert(5)
+    minHeap.insert(3)
+    minHeap.insert(17)
+    minHeap.insert(10)
+    minHeap.insert(84)
+    minHeap.insert(19)
+    minHeap.insert(6)
+    minHeap.insert(22)
+    minHeap.insert(9)
+    minHeap.minHeap()
+    minHeap.Print()
+
+    # Max Heap
+    class MaxHeap(object):
+        def __init__(self, maxsize):
+            self.maxsize = maxsize
+            self.size = 0
+            self.heap = [0] * (self.maxsize + 1)
+            self.heap[0] = sys.maxsize
+
+        def parent(self, pos):
+            """ Return the position of parent for the node at pos """
+            return pos // 2
+
+        def leftChild(self, pos):
+            """ Return the position of the left child for the node at pos """
+            return 2 * pos
+
+        def rightChild(self, pos):
+            """ Return the position of the right child for the node at pos """
+            return (2 * pos) + 1
+
+        def isLeaf(self, pos):
+            """ Return if the node is a leaf node """
+            if (self.size // 2) <= pos <= self.size:
+                return True
+            return False
+
+        def swap(self, fpos, spos):
+            """ Swap the two nodes """
+            self.heap[fpos], self.heap[spos] = self.heap[spos], self.heap[fpos]
+
+        def maxHeapify(self, pos):
+            """ Heapify the node at pos """
+            if not self.isLeaf(pos):
+                if self.heap[pos] < self.heap[self.leftChild(pos)] or self.heap[pos] < self.heap[self.rightChild(pos)]:
+                    if self.heap[self.leftChild(pos)] > self.heap[self.rightChild(pos)]:
+                        self.swap(pos, self.leftChild(pos))
+                        self.maxHeapify(self.leftChild(pos))
+                    else:
+                        self.swap(pos, self.rightChild(pos))
+                        self.maxHeapify(self.rightChild(pos))
+
+        def insert(self, element):
+            if self.size >= self.maxsize:
+                return
+            self.size += 1
+            self.heap[self.size] = element
+            current = self.size
+
+            while self.heap[current] > self.heap[self.parent(current)]:
+                self.swap(current, self.parent(current))
+                current = self.parent(current)
+
+        def Print(self):
+            """ Print the entire heap structure """
+            for i in range(1, (self.size // 2) + 1):
+                print(f" PARENT : {str(self.heap[i])}"
+                      f" LEFT  CHILD : {str(self.heap[2 * i])}"
+                      f" RIGHT CHILD : {str(self.heap[2 * i + 1])}")
+
+    print('The maxHeap is ')
+    maxHeap = MaxHeap(15)
+    maxHeap.insert(5)
+    maxHeap.insert(3)
+    maxHeap.insert(17)
+    maxHeap.insert(10)
+    maxHeap.insert(84)
+    maxHeap.insert(19)
+    maxHeap.insert(6)
+    maxHeap.insert(22)
+    maxHeap.insert(9)
+
+    maxHeap.Print()
+
+
 if __name__ == '__main__':
     array()
     linked_list()
@@ -211,3 +393,4 @@ if __name__ == '__main__':
     queue()
     binary_tree()
     binary_search_tree()
+    binary_heap()
