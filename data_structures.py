@@ -224,6 +224,8 @@ def binary_heap():
        10        15           16         31
       /                      /  \        /  \
     30                     41    51    100   41
+
+    # Max heap: The key at the root node must be maximum among the keys of all it’s children
     """
 
     # Min heap
@@ -384,6 +386,22 @@ def binary_heap():
     maxHeap.insert(9)
 
     maxHeap.Print()
+
+
+def hash_table():
+    """
+    # Diff: Dictionary vs Hash Table
+    - A dictionary is a data structure that maps keys to values.
+    - A hash table is a data structure that maps keys to values
+      by taking the hash value of the key (by applying some hash function to it)
+      and mapping that to a bucket where one or more values are stored.
+
+    For clarity it may be important to note that it MAY be the case that
+    Python currently implements their dictionaries using hash tables,
+    and it MAY be the case in the future that Python changes
+    that fact without causing their dictionaries to stop being dictionaries.
+    """
+    return 0
 
 
 if __name__ == '__main__':
