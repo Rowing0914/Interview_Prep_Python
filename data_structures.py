@@ -404,6 +404,61 @@ def hash_table():
     return 0
 
 
+def graph():
+    """ Graph is a data structure which consists of the following components
+    1. A finite set of vertices, aka nodes
+    2. A finite set of edges which connecting two nodes
+       ** Usually denoted as (u, v) indicating an edge connecting vertex u -> vertex v
+
+    # Adjacency Matrix
+    An adjacency matrix is a 2D array of size V x V where V is the num of vertices in a graph
+    Ex)
+          0 1 2 3
+        0 0 1 0 0
+        1 1 0 1 1
+        2 0 1 0 1
+        3 0 1 1 0
+
+    # Easiest way of representing a graph in Python
+    Use a dictionary to represent a graph
+    Ex)
+        A -> B
+        A -> C
+        B -> C
+        B -> D
+        C -> D
+        D -> C
+        E -> F
+        F -> C
+    Let's code it below!!
+    """
+
+    graph = {'A': ['B', 'C'],
+             'B': ['C', 'D'],
+             'C': ['D'],
+             'D': ['C'],
+             'E': ['F'],
+             'F': ['C']}
+
+    def generate_edges(graph):
+        """ Convert the dict representation of a graph into a list one
+            - https://www.geeksforgeeks.org/generate-graph-using-dictionary-python/
+        """
+        edges = []
+
+        # for each node in graph
+        for node in graph:
+
+            # for each neighbour node of a single node
+            for neighbour in graph[node]:
+                # if edge exists then append
+                edges.append((node, neighbour))
+        return edges
+
+    a = generate_edges(graph=graph)
+    print(a)
+
+
 if __name__ == '__main__':
     array()
     linked_list()
@@ -412,3 +467,4 @@ if __name__ == '__main__':
     binary_tree()
     binary_search_tree()
     binary_heap()
+    graph()
